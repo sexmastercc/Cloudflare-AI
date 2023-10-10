@@ -1,4 +1,4 @@
-const apiUrl = "API URL";
+const apiUrl = "YOUR API URL";
 let uuid = '';
 
 function generateUUID() {
@@ -41,7 +41,7 @@ function renderChatHistory(messages) {
 async function sendMessage(event) {
   event.preventDefault();
   const userInputField = document.getElementById('user-message');
-  const userQuery = userInputField.value.trim();
+  const userQuery = encodeURIComponent(userInputField.value.trim());
   if (userQuery === '') {
     return;
   }
