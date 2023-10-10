@@ -14,8 +14,8 @@ function uuid() {
 }
 
 const chats = new Map();
-const maxMemory = 5
-const preprompt = "You are a helpful and responsive assistant, you answer questions directly and provide instruction unless told otherwise.";
+const maxMemory = 5 //message history is required otherwise the AI just returns nothing.
+const preprompt = "You are a helpful and responsive assistant, you answer questions directly and provide instruction unless told otherwise."; //allows for custom prompts on every message sent beforehand.
 
 export default {
   async fetch(request, env) {
