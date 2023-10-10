@@ -1,4 +1,4 @@
-const apiUrl = "YOUR API URL";
+const apiUrl = "API URL";
 let uuid = '';
 
 function generateUUID() {
@@ -16,7 +16,7 @@ function generateUUID() {
 
 function renderChatHistory(messages) {
   const chatHistoryDiv = document.getElementById('chat-history');
-
+  chatHistoryDiv.innerHTML = '';
   messages.forEach(message => {
     const role = message.role;
     const content = message.content;
@@ -27,47 +27,48 @@ function renderChatHistory(messages) {
       messageText = `Bot: ${content.response}`;
     } else {
       messageText = `You: ${content}`;
-   }
+    }
 
-   const pElement= document.createElement('p');
-   pElement.textContent= messageText;
+    const pElement = document.createElement('p');
+    pElement.textContent = messageText;
 
-   chatHistoryDiv.appendChild(pElement);
- });
+    chatHistoryDiv.appendChild(pElement);
+  });
 }
+
 
 
 async function sendMessage(event) {
   event.preventDefault();
-  const userInputField=document.getElementById('user-message');
-  const userQuery=userInputField.value.trim();
-  if(userQuery===''){
-     return; 
-   }
-  
+  const userInputField = document.getElementById('user-message');
+  const userQuery = userInputField.value.trim();
+  if (userQuery === '') {
+    return;
+  }
+
   const chatHistoryDiv = document.getElementById('chat-history');
   const loadingMessage = document.createElement('p');
   loadingMessage.textContent = 'Loading...';
   chatHistoryDiv.appendChild(loadingMessage);
-    
- try{
-         const response= await fetch(`${apiUrl}/${uuid}?q=${userQuery}`);
-         
-         if(!response.ok){
-             throw new Error('Error occurred while fetching data from API');
-          }
-          const jsonResponse=await response.json();
-           const messages=jsonResponse[0].response;
-           chatHistoryDiv.removeChild(loadingMessage);
-            renderChatHistory(messages);
-            userInputField.value='';
-         } catch(error) {
-                console.log(error);
-         }
+
+  try {
+    const response = await fetch(`${apiUrl}/${uuid}?q=${userQuery}`);
+
+    if (!response.ok) {
+      throw new Error('Error occurred while fetching data from API');
+    }
+    const jsonResponse = await response.json();
+    const messages = jsonResponse[0].response;
+    chatHistoryDiv.removeChild(loadingMessage);
+    renderChatHistory(messages);
+    userInputField.value = '';
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 
-const messageForm=document.getElementById('message-form');
+const messageForm = document.getElementById('message-form');
 
 if (!uuid) {
   uuid = generateUUID();
