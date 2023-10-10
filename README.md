@@ -46,4 +46,6 @@ the query page is how the user sends messages and returns a responce.
 1) Rate limiting your API
 2) Password locking your API
 3) Much better Frontend UI
+4) Ability to keep UUID/apikey and go back to previous conversations (frontend)
+5) Add markdown support on frontend
 ```
