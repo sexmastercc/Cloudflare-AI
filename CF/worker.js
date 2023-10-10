@@ -12,10 +12,7 @@ function uuid() {
   }
   return uuid;
 }
-
 const chats = new Map();
-//modify preprompt if you want your AI to give specific responces or act a specific way.
-const preprompt = 'You are a helpful assistant who give straight forward and direct responces to questions unless asked otherwise.';
 
 export default {
   async fetch(request, env) {
@@ -23,7 +20,7 @@ export default {
     const ai = new Ai(env.AI);
 
     const url = new URL(request.url);
-    const query = url.searchParams.get('q');
+    const query = decodeURIComponent(url.searchParams.get('q'));
     const id = url.pathname.substring(1);
 
     if (!id) {
@@ -36,21 +33,23 @@ export default {
 
     if (!chat) {
       chat = {
-        messages: [{ role: 'system', content: preprompt },],
+        messages: [],
         userId: id,
       };
       chats.set(id, chat);
-    } else if (!query) {
+    }
+
+    if (!query) {
       tasks.push({ inputs: chat, response: chat.messages });
       return new Response(JSON.stringify(tasks), {
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
           'Access-Control-Allow-Headers': 'Content-Type',
-          'Access-Control-Max-Age': '86400', 
+          'Access-Control-Max-Age': '86400',
         },
-      });  
+      });
     }
 
     if (query) {
@@ -62,13 +61,13 @@ export default {
     tasks.push({ inputs: chat, response: chat.messages });
 
     return new Response(JSON.stringify(tasks), {
-      headers: { 
+      headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Max-Age': '86400', 
+        'Access-Control-Max-Age': '86400',
       },
-    });    
+    });
   },
 };
