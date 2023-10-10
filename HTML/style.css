@@ -17,7 +17,8 @@ h1 {
   margin: 20px auto;
   max-width: 600px;
   min-height: 300px;
-  overflow-y: scroll;
+  overflow-y: auto; 
+  max-height: 300px;
 }
 
 #message-form {
