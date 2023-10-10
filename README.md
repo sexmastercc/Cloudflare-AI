@@ -49,3 +49,5 @@ the query page is how the user sends messages and returns a responce.
 4) Ability to keep UUID/apikey and go back to previous conversations (frontend)
 5) Add markdown support on frontend
 ```
+
+### If you are using this project PLEASE provide credit it is greatly appricated :)
