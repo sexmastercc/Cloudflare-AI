@@ -28,7 +28,7 @@ https://cloudflare.com/ this is 100% free and does not require any KYC. Max 100k
   15) Profit!!
 ```
     
-##Basic API Explenation
+## Basic API Explenation
 
 The API is pretty simple, there are 3 main parts:
 
@@ -39,3 +39,11 @@ The API is pretty simple, there are 3 main parts:
 The root page simply just redirects you to the API page with a randomly generated API key
 the API page shows the message history for that API key
 the query page is how the user sends messages and returns a responce.
+
+### Future updates:
+
+```
+1) Rate limiting your API
+2) Password locking your API
+3) Much better Frontend UI
+```
