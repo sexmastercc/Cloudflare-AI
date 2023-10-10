@@ -14,6 +14,8 @@ function uuid() {
 }
 
 const chats = new Map();
+//modify preprompt if you want your AI to give specific responces or act a specific way.
+const preprompt = 'You are a helpful assistant who give straight forward and direct responces to questions unless asked otherwise.';
 
 export default {
   async fetch(request, env) {
@@ -34,7 +36,7 @@ export default {
 
     if (!chat) {
       chat = {
-        messages: [],
+        messages: [{ role: 'system', content: preprompt },],
         userId: id,
       };
       chats.set(id, chat);
