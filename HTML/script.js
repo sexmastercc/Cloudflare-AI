@@ -17,22 +17,39 @@ function generateUUID() {
 function renderChatHistory(messages) {
   const chatHistoryDiv = document.getElementById('chat-history');
   chatHistoryDiv.innerHTML = '';
+
+  let userMessageSeen = false;
+
   messages.forEach(message => {
     const role = message.role;
-    const content = message.content;
+    let content = '';
 
-    let messageText;
-
-    if (role === 'system') {
-      messageText = `Bot: ${content.response}`;
-    } else {
-      messageText = `You: ${content}`;
+    if (message.content) {
+      if (typeof message.content === 'string') {
+        content = message.content;
+      } else if (message.content.response) {
+        content = message.content.response;
+      }
     }
 
-    const pElement = document.createElement('p');
-    pElement.textContent = messageText;
+    if (role === 'user') {
+      userMessageSeen = true;
+    }
 
-    chatHistoryDiv.appendChild(pElement);
+    if (userMessageSeen || role === 'user') {
+      let messageText;
+
+      if (role === 'system') {
+        messageText = `Bot: ${content}`;
+      } else {
+        messageText = `You: ${content}`;
+      }
+
+      const pElement = document.createElement('p');
+      pElement.textContent = messageText;
+
+      chatHistoryDiv.appendChild(pElement);
+    }
   });
 }
 
@@ -41,7 +58,7 @@ function renderChatHistory(messages) {
 async function sendMessage(event) {
   event.preventDefault();
   const userInputField = document.getElementById('user-message');
-  const userQuery = encodeURIComponent(userInputField.value.trim());
+  const userQuery = userInputField.value.trim();
   if (userQuery === '') {
     return;
   }
@@ -52,7 +69,7 @@ async function sendMessage(event) {
   chatHistoryDiv.appendChild(loadingMessage);
 
   try {
-    const response = await fetch(`${apiUrl}/${uuid}?q=${userQuery}`);
+    const response = await fetch(`${apiUrl}/${uuid}?q=${encodeURIComponent(userQuery)}`);
 
     if (!response.ok) {
       throw new Error('Error occurred while fetching data from API');
