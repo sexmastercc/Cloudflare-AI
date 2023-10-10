@@ -53,3 +53,4 @@ the query page is how the user sends messages and returns a responce.
 ```
 
 ### If you are using this project PLEASE provide credit it is greatly appricated :)
+![Logo](https://github.com/localuser-isback/Cloudflare-AI/blob/main/logo.png?raw=true)
