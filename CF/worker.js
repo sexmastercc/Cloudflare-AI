@@ -53,9 +53,22 @@ export default {
     }
 
     if (query) {
-      chat.messages.push({ role: 'user', content: query });
-      let response = await ai.run('@cf/meta/llama-2-7b-chat-int8', chat);
-      chat.messages.push({ role: 'system', content: response });
+      if (query == "null") {
+        tasks.push({ inputs: chat, response: chat.messages });
+        return new Response(JSON.stringify(tasks), {
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Max-Age': '86400',
+          },
+        });
+      } else {
+        chat.messages.push({ role: 'user', content: query });
+        let response = await ai.run('@cf/meta/llama-2-7b-chat-int8', chat);
+        chat.messages.push({ role: 'system', content: response });
+      }
     }
 
     tasks.push({ inputs: chat, response: chat.messages });
