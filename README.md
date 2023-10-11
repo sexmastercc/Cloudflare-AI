@@ -52,5 +52,13 @@ the query page is how the user sends messages and returns a responce.
 7) Voice & audio to text via wisper (not any time soon)
 ```
 
+### Why this over the offical cloudflare API?
+
+1) custom domain.
+2) much more customization.
+3) ability to easily share your api without giving out any api keys.
+4) chat history (limited but better than none) and ID system.
+5) pre-made frontend
+
 ### If you are using this project PLEASE provide credit it is greatly appricated :)
 ![Logo](https://github.com/localuser-isback/Cloudflare-AI/blob/main/logo.png?raw=true)
