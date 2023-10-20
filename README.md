@@ -60,8 +60,12 @@ the query page is how the user sends messages and returns a responce.
 4) chat history (limited but better than none) and ID system.
 5) pre-made frontend
 
-known issues:
-  Sometimes the bot will respond with nothing, this is becasue the amount of text in history execed cloudflares max which is pretty low, solution is to lower max history or set it to none if needed.
+#### known issues:
+--> Sometimes the bot will respond with nothing, this is becasue the amount of text in history execed cloudflares max which is pretty low, solution is to lower max history or set it to none if needed.
+
+#### Wanna host *without* cloudflare workers?
+Use miniflare! allows you to host cloudflare workers off your local machine and if you wanna go all out use cloudflared tunnel to create a tunnel to the public with your custom domain!
+https://github.com/cloudflare/miniflare
 
 ### If you are using this project PLEASE provide credit it is greatly appricated :)
 ![Logo](https://github.com/localuser-isback/Cloudflare-AI/blob/main/logo.png?raw=true)
