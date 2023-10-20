@@ -66,8 +66,8 @@ async function sendMessage(event) {
   }
 
   const chatHistoryDiv = document.getElementById('chat-history');
-  const loadingMessage = document.createElement('p');
-  loadingMessage.textContent = 'Loading...';
+  const loadingMessage = document.createElement('div');
+  loadingMessage.innerHTML = '<svg width="30" height="30" viewBox="0 0 50 50"><circle cx="25" cy="25" r="20" stroke="black" stroke-width="4" fill="none" /><circle cx="25" cy="25" r="20" stroke="#3498db" stroke-width="4" fill="none" stroke-dasharray="90" stroke-dashoffset="0"><animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="1s" repeatCount="indefinite"/></circle></svg><center class="smaller">Loading...</center>';
   chatHistoryDiv.appendChild(loadingMessage);
 
   try {
