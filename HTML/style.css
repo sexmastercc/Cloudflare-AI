@@ -11,6 +11,14 @@ h1 {
   color: #fff;
 }
 
+pre {
+  background-color: #333;
+}
+
+code {
+  background-color: #333;
+}
+
 #chat-history {
   background-color: #444;
   border: 2px solid #666;
