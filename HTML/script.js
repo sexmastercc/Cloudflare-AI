@@ -48,7 +48,7 @@ function renderChatHistory(messages) {
       }
 
       const pElement = document.createElement('div');
-      pElement.textContent = messageText;
+      pElement.innerHTML = messageText;
 
       chatHistoryDiv.appendChild(pElement);
     }
