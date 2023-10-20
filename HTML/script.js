@@ -47,7 +47,7 @@ function renderChatHistory(messages) {
         messageText = `You: ${content}`;
       }
 
-      const pElement = document.createElement('p');
+      const pElement = document.createElement('div');
       pElement.textContent = messageText;
 
       chatHistoryDiv.appendChild(pElement);
