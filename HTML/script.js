@@ -36,6 +36,8 @@ function renderChatHistory(messages) {
       userMessageSeen = true;
     }
 
+    content = marked.parse(content);
+
     if (userMessageSeen || role === 'user') {
       let messageText;
 
