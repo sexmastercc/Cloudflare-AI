@@ -47,7 +47,7 @@ the query page is how the user sends messages and returns a responce.
 2) Password locking your API
 3) Much better Frontend UI
 4) Ability to keep UUID/apikey and go back to previous conversations (frontend)
-5) Add markdown support on frontend
+5) Add markdown support on frontend [DONE!]
 6) Ability to change models quickly and easily
 7) Voice & audio to text via wisper (not any time soon)
 ```
@@ -59,6 +59,9 @@ the query page is how the user sends messages and returns a responce.
 3) ability to easily share your api without giving out any api keys.
 4) chat history (limited but better than none) and ID system.
 5) pre-made frontend
+
+known issues:
+  Sometimes the bot will respond with nothing, this is becasue the amount of text in history execed cloudflares max which is pretty low, solution is to lower max history or set it to none if needed.
 
 ### If you are using this project PLEASE provide credit it is greatly appricated :)
 ![Logo](https://github.com/localuser-isback/Cloudflare-AI/blob/main/logo.png?raw=true)
