@@ -46,7 +46,7 @@ Every ID by default has a max of 100 requests to the AI before being to be re-ge
 ### Future updates:
 
 ```
-1) Rate limiting your API [PARTIALLY DONE ☄️]
+1) Rate limiting your API [DONE! ⭐]
 2) Password locking your API [NO SUPPORT YET🌑]
 3) Much better Frontend UI [WIP]
 4) Ability to keep UUID/apikey and go back to previous conversations (frontend) [NO SUPPORT YET🌑]
