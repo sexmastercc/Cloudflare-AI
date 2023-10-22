@@ -36,7 +36,10 @@ The API is pretty simple, there are 3 main parts:
 1) Root path redirects to randomly generated ID ==> "/" --> [redirect] --> "/ID"
 2) View ID & messages ==> "/ID"
 3) Submit a query ==> "/ID?q=%query"
-3) API details page ==> "/api"
+Extra:
+API details page ==> "/api"
+
+Every ID by default has a max of 100 requests to the AI before being to be re-generated, this can be configured in the worker js file.
 
 ### Future updates:
 
