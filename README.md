@@ -37,7 +37,8 @@ The API is pretty simple, there are 3 main parts:
 2) View ID & messages ==> "/ID"
 3) Submit a query ==> "/ID?q=%query"
 
-####Extra:
+#### Extra:
+
 API details page ==> "/api"
 
 Every ID by default has a max of 100 requests to the AI before being to be re-generated, this can be configured in the worker js file.
