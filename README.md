@@ -2,7 +2,8 @@
 # Cloudflare LLaMa Worker AI Chatbot
 
 This project is a POC and a pretty basic (but will be updated!) way of creating your own chatbot using cloudflares new and 100% free (No KYC or credit card!) way to create an AI chatbot with a simple UI.
-
+Due to this feature being in beta it may be hard to keep up with the newest updates so make sure your API is up to date with the newest code.
+This is NOT for production use.
 
 
 ## Steps
@@ -32,13 +33,10 @@ https://cloudflare.com/ this is 100% free and does not require any KYC. Max 100k
 
 The API is pretty simple, there are 3 main parts:
 
-1) the root page ==> "/"
-2) the API page "/:API"
-3) the query "/:API?q=%query"
-
-The root page simply just redirects you to the API page with a randomly generated API key
-the API page shows the message history for that API key
-the query page is how the user sends messages and returns a responce.
+1) Root path redirects to randomly generated ID ==> "/" --> [redirect] --> "/ID"
+2) View ID & messages ==> "/ID"
+3) Submit a query ==> "/ID?q=%query"
+3) API details page ==> "/api"
 
 ### Future updates:
 
