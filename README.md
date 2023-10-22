@@ -5,6 +5,7 @@ This project is a POC and a pretty basic (but will be updated!) way of creating 
 Due to this feature being in beta it may be hard to keep up with the newest updates so make sure your API is up to date with the newest code.
 This is NOT for production use.
 
+[WARNING!] By default the API does not have a password, it is recommened to add a password to your API aswell as configure the rate limit settings if you want it to be less public.
 
 ## Steps
 
@@ -31,15 +32,21 @@ https://cloudflare.com/ this is 100% free and does not require any KYC. Max 100k
     
 ## Basic API Explenation
 
-The API is pretty simple, there are 3 main parts:
+The API is pretty simple:
 
 1) Root path redirects to randomly generated ID ==> "/" --> [redirect] --> "/ID"
 2) View ID & messages ==> "/ID"
-3) Submit a query ==> "/ID?q=%query"
+3) Submit a query ==> "/ID?q=[QUERY]"
+
+If the API is password locked then:
+
+1) /api still returns API details
+2) any other path requires ?p= param with the password after it to access the data
+3) if the user is sending a query the format would be "/ID?q=[QUERY]&p=[PASSWORD]"
 
 #### Extra:
 
-API details page ==> "/api"
+API details page, displays details such as ratelimit, AI model, timezone, version, etc  ==> "/api"
 
 Every ID by default has a max of 100 requests to the AI before being to be re-generated, this can be configured in the worker js file.
 
@@ -47,7 +54,7 @@ Every ID by default has a max of 100 requests to the AI before being to be re-ge
 
 ```
 1) Rate limiting your API [DONE! ⭐]
-2) Password locking your API [NO SUPPORT YET🌑]
+2) Password locking your API [DONE! ⭐]
 3) Much better Frontend UI [WIP]
 4) Ability to keep UUID/apikey and go back to previous conversations (frontend) [NO SUPPORT YET🌑]
 5) Add markdown support on frontend [DONE! ⭐]
