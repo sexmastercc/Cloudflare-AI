@@ -43,13 +43,13 @@ the query page is how the user sends messages and returns a responce.
 ### Future updates:
 
 ```
-1) Rate limiting your API
-2) Password locking your API
-3) Much better Frontend UI
-4) Ability to keep UUID/apikey and go back to previous conversations (frontend)
-5) Add markdown support on frontend [DONE!]
-6) Ability to change models quickly and easily
-7) Voice & audio to text via wisper (not any time soon)
+1) Rate limiting your API [PARTIALLY DONE ☄️]
+2) Password locking your API [NO SUPPORT YET🌑]
+3) Much better Frontend UI [WIP]
+4) Ability to keep UUID/apikey and go back to previous conversations (frontend) [NO SUPPORT YET🌑]
+5) Add markdown support on frontend [DONE! ⭐]
+6) Ability to change models quickly and easily [PARTIALLY DONE ☄️]
+7) Voice & audio to text via wisper (not any time soon) [NO SUPPORT YET🌑]
 ```
 
 ### Why this over the offical cloudflare API?
