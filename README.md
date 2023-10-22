@@ -14,8 +14,8 @@ https://cloudflare.com/ this is 100% free and does not require any KYC. Max 100k
   1) Create cloudflare account
   2) Go to https://dash.cloudflare.com/
   3) Click workers & pages
-  4) Click overview
-  5) Click create worker
+  4) Click AI then "Worker AI Worker Templates"
+  5) Select LLM App
   6) Name it whatever you want
   7) Click deploy
   8) Click edit code
