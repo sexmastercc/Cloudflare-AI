@@ -2,7 +2,7 @@
 import { Ai } from './vendor/@cloudflare/ai';
 
 //Current version of your API
-const version = "1.0.0";
+const version = "1.0.1";
 
 //ID generator
 function uuid() {
@@ -21,6 +21,9 @@ function uuid() {
 //creating new map for chat messages
 const chats = new Map();
 
+//creating new map for requests used for ratelimit
+const requestCounts = new Map();
+
 // ------------------ CONFIG ------------------ //
 
 //Messages stored, dont go over 5 since if history too large AI returns null
@@ -29,12 +32,49 @@ const maxMemory = 3;
 const preprompt = "You are a helpful and responsive assistant, you answer questions directly and provide instruction unless told otherwise.";
 //Max number of requests allowed per-ID, ex: https://your-api.com/[ID], will be improved later
 const maxRequest = 100;
+//Max number of requests GLOBALLY per minute
+const maxRequestsPerMinute = 100;
 //DO NOT TOUCH UNLESS YOU KNOW WHAT YOUR DOING!!
 const ai_model = "@cf/meta/llama-2-7b-chat-int8";
 //Timezome for req_time, set to your timezone of choice
 const timezone = "en-US";
 
 // --------------- END OF CONFIG --------------- //
+
+
+function checkRateLimit(ip) {
+  const currentTime = Date.now();
+  if (!requestCounts.has(ip)) {
+    requestCounts.set(ip, [currentTime]);
+    return true;
+  } else {
+    const requests = requestCounts.get(ip);
+    // Remove expired requests (older than a minute)
+    while (requests.length > 0 && currentTime - requests[0] > 60 * 1000) {
+      requests.shift();
+    }
+    if (requests.length < maxRequestsPerMinute) {
+      requests.push(currentTime);
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
+
+function updateRateLimit(ip) {
+  const currentTime = Date.now();
+  if (!requestCounts.has(ip)) {
+    requestCounts.set(ip, [currentTime]);
+  } else {
+    const requests = requestCounts.get(ip);
+    // Remove expired requests (older than a minute)
+    while (requests.length > 0 && currentTime - requests[0] > 60 * 1000) {
+      requests.shift();
+    }
+    requests.push(currentTime);
+  }
+}
 
 export default {
   async fetch(request, env) {
@@ -60,6 +100,17 @@ export default {
       second: 'numeric',
       hour12: true
     });
+
+    if (!checkRateLimit(client_ip)) {
+      // Return a rate limit error response
+      const error_response = {
+        role: 'API',
+        content: `[Error]: Ratelimit activated, no more than " + maxRequestsPerMinute + " Per requests minute. IP: " + client_ip`,
+      };
+      return new Response(JSON.stringify(error_response), {
+        headers: jsonheaders,
+      });
+    }
     
     //if user does not supply ID, make one.
     if (!id) {
@@ -109,6 +160,8 @@ export default {
         TIMEZONE: timezone,
         REQUEST_TIME: req_time,
         CLIENT_IP: client_ip,
+        REQUESTS_PER_SESSION: maxRequest,
+        REQUESTS_PER_MINUTE: maxRequestsPerMinute,
         GITHUB: 'https://github.com/localuser-isback/Cloudflare-AI', //keep if epic.
         VERSION: version
       };
@@ -128,6 +181,7 @@ export default {
       chat.messages.push({ role: 'user', content: query });
       chat.messageCount += 1;
       chat.client.used_req += 1;
+      updateRateLimit(client_ip);
 
       //removes previous messages but 1 when max memory reached
       if (chat.messageCount >= maxMemory + 1) {
