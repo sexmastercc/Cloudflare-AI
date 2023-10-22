@@ -1,10 +1,10 @@
-//DO NOT TOUCH UNLESS YOU KNOW WHAT YOUR DOING!!
+//DO NOT TOUCH UNLESS YOU KNOW WHAT YOU'RE DOING!!
 import { Ai } from './vendor/@cloudflare/ai.js';
 
-//Current version of your API
-const version = "1.0.2";
+// Current version of your API
+const version = "1.0.3";
 
-//ID generator
+// ID generator
 function uuid() {
   let uuid = '';
   const chars = 'abcdef0123456789';
@@ -18,31 +18,31 @@ function uuid() {
   return uuid;
 }
 
-//creating new map for chat messages
+// Creating a new map for chat messages
 const chats = new Map();
 
-//creating new map for requests used for ratelimit
+// Creating a new map for requests used for rate limit
 const requestCounts = new Map();
 
 // ------------------ CONFIG ------------------ //
 
-//Messages stored, dont go over 5 since if history too large AI returns null
-const maxMemory = 3; 
-//give your AI a prompt for specific instructions if you want to fine-tune
+// Messages stored, don't go over 5 since if history too large AI returns null
+const maxMemory = 3;
+// Give your AI a prompt for specific instructions if you want to fine-tune
 const preprompt = "You are a helpful and responsive assistant, you answer questions directly and provide instruction unless told otherwise.";
-//Max number of requests allowed per-ID, ex: https://your-api.com/[ID], will be improved later
+// Max number of requests allowed per-ID, ex: https://your-api.com/[ID], will be improved later
 const maxRequest = 100;
-//Max number of requests GLOBALLY per minute
+// Max number of requests GLOBALLY per minute
 const maxRequestsPerMinute = 100;
-//DO NOT TOUCH UNLESS YOU KNOW WHAT YOUR DOING!!
+// DO NOT TOUCH UNLESS YOU KNOW WHAT YOU'RE DOING!!
 const ai_model = "@cf/meta/llama-2-7b-chat-int8";
-//Timezome for req_time, set to your timezone of choice
+// Timezone for req_time, set to your timezone of choice
 const timezone = "en-US";
-//require password to your API, change 'none' to your password of choice or keep it unloacked with 'none'
+// Require a password to your API, change 'none' to your password of choice or keep it unlocked with 'none'
 const password = 'none';
+var password_locked = undefined;
 
 // --------------- END OF CONFIG --------------- //
-var password_locked = undefined;
 
 if (password.toLowerCase() !== 'none') {
   password_locked = true;
@@ -50,7 +50,6 @@ if (password.toLowerCase() !== 'none') {
   password_locked = false;
 }
 
-//checking ratelimits
 function checkRateLimit(ip) {
   const currentTime = Date.now();
   if (!requestCounts.has(ip)) {
@@ -71,7 +70,6 @@ function checkRateLimit(ip) {
   }
 }
 
-//update client ratelimit
 function updateRateLimit(ip) {
   const currentTime = Date.now();
   if (!requestCounts.has(ip)) {
@@ -88,13 +86,13 @@ function updateRateLimit(ip) {
 
 export default {
   async fetch(request, env) {
-    //defining variables
+    // Defining variables
     const tasks = [];
     const url = new URL(request.url);
     const query = decodeURIComponent(url.searchParams.get('q'));
     const id = url.pathname.substring(1);
     const ai = new Ai(env.AI);
-    //CORS headers & Json, modify if you know what your doing.
+    // CORS headers & JSON, modify if you know what you're doing.
     const jsonheaders = {
       "content-type": "application/json;charset=UTF-8",
       'Access-Control-Allow-Origin': '*',
@@ -102,7 +100,7 @@ export default {
       'Access-Control-Allow-Headers': 'Content-Type',
       'Access-Control-Max-Age': '86400',
     };
-    //defining time & getting client IP via cloudflare
+    // Defining time & getting client IP via Cloudflare
     let client_ip = request.headers.get("CF-Connecting-IP");
     let req_time = new Date().toLocaleTimeString(timezone, {
       hour: 'numeric',
@@ -111,13 +109,13 @@ export default {
       hour12: true
     });
 
-    //check if password is enabled
+    // Check if a password is enabled
     if (password_locked == true) {
-      //if it is then get the password param
-      //if the user is going anywhere except API details page
+      // If it is then get the password param
+      // If the user is going anywhere except the API details page
       if (id !== "api") {
         const client_passed_pass = url.searchParams.get('p');
-        //if param isnt sent
+        // If the param isn't sent
         if (!client_passed_pass) {
           const error_response = {
             role: 'API',
@@ -127,7 +125,7 @@ export default {
             headers: jsonheaders,
           });
         }
-        //if password is wrong
+        // If the password is wrong
         if (client_passed_pass !== password) {
           const error_response = {
             role: 'API',
@@ -144,14 +142,14 @@ export default {
       // Return a rate limit error response
       const error_response = {
         role: 'API',
-        content: `[Error]: Ratelimit activated, no more than " + maxRequestsPerMinute + " Per requests minute. IP: " + client_ip`,
+        content: `[Error]: Rate limit activated, no more than ${maxRequestsPerMinute} requests per minute. IP: ${client_ip}`,
       };
       return new Response(JSON.stringify(error_response), {
         headers: jsonheaders,
       });
     }
-    
-    //if user does not supply ID, make one.
+
+    // If the user does not supply ID, make one
     if (!id) {
       const newId = uuid();
       const newUrl = `${url.origin}/${newId}`;
@@ -160,7 +158,7 @@ export default {
 
     let chat = chats.get(id);
 
-    //chat JSON.
+    // Chat JSON
     if (!chat) {
       chat = {
         messages: [],
@@ -175,15 +173,13 @@ export default {
       };
       chats.set(id, chat);
       chat.messages.push({ role: 'system', content: preprompt });
-      tasks.push({ inputs: chat, response: chat.messages });
     }
 
-    //update variables per-request
+    // Update variables per-request
     chat.client.ip = client_ip;
     chat.client.req_time = req_time;
 
-
-    //if no query is supplied return messages
+    // If no query is supplied, return messages
     if (!query) {
       tasks.push({ inputs: chat, response: chat.messages });
       return new Response(JSON.stringify(tasks), {
@@ -191,7 +187,6 @@ export default {
       });
     }
 
-    //if user visits ex: https://your-api.com/api
     if (id == "api") {
       const info = {
         URL: url,
@@ -202,7 +197,7 @@ export default {
         REQUESTS_PER_SESSION: maxRequest,
         REQUESTS_PER_MINUTE: maxRequestsPerMinute,
         PASSWORD_LOCKED: password_locked,
-        GITHUB: 'https://github.com/localuser-isback/Cloudflare-AI', //keep if epic.
+        GITHUB: 'https://github.com/localuser-isback/Cloudflare-AI', // Keep if epic.
         VERSION: version
       };
       return new Response(JSON.stringify(info), {
@@ -210,45 +205,42 @@ export default {
       });
     }
 
-    //if query is null or undefined return messages
     if (query === "null" || query == undefined) {
       tasks.push({ inputs: chat, response: chat.messages });
       return new Response(JSON.stringify(tasks), {
         headers: jsonheaders,
       });
     } else {
-      //ratelimit & user messages
+      // Rate limit & user messages
       chat.messages.push({ role: 'user', content: query });
       chat.messageCount += 1;
       chat.client.used_req += 1;
       updateRateLimit(client_ip);
 
-      //removes previous messages but 1 when max memory reached
+      // Removes previous messages but 1 when max memory reached
       if (chat.messageCount >= maxMemory + 1) {
         chat.messages = chat.messages.slice(-2);
         chat.messageCount = 0;
       }
 
-      //ratelimit check
+      // Rate limit check
       if (chat.client.used_req >= maxRequest) {
-        //return api error
+        // Return an API error
         const error_page = {
           role: 'API',
-          content: "[Error]: Ratelimit activated, no more than " + maxRequest + " Per requests ID. IP: " + client_ip,
+          content: `[Error]: Rate limit activated, no more than ${maxRequest} requests per ID. IP: ${client_ip}`,
         };
-        const json = JSON.stringify(error_page, null, 2);
-        return new Response(json, {
+        return new Response(JSON.stringify(error_page, null, 2), {
           headers: jsonheaders,
         });
       }
 
-      //send data to AI and return response
+      // Send data to AI and return response
       let response = await ai.run(ai_model, chat);
       chat.messages.push({ role: 'system', content: response });
     }
 
-
-    //update and return new data
+    // Push the chatTask into tasks once after processing the request
     tasks.push({ inputs: chat, response: chat.messages });
 
     return new Response(JSON.stringify(tasks), {
