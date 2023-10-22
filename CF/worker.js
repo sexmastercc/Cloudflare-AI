@@ -1,5 +1,5 @@
 //DO NOT TOUCH UNLESS YOU KNOW WHAT YOUR DOING!!
-import { Ai } from './vendor/@cloudflare/ai';
+import { Ai } from './vendor/@cloudflare/ai.js';
 
 //Current version of your API
 const version = "1.0.1";
