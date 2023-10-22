@@ -1,5 +1,8 @@
 //DO NOT TOUCH UNLESS YOU KNOW WHAT YOUR DOING!!
-import { Ai } from './vendor/@cloudflare/ai.js';
+import { Ai } from './vendor/@cloudflare/ai';
+
+//Current version of your API
+const version = "1.0.0";
 
 //ID generator
 function uuid() {
@@ -106,7 +109,8 @@ export default {
         TIMEZONE: timezone,
         REQUEST_TIME: req_time,
         CLIENT_IP: client_ip,
-        GITHUB: 'https://github.com/localuser-isback/Cloudflare-AI' //keep if epic.
+        GITHUB: 'https://github.com/localuser-isback/Cloudflare-AI', //keep if epic.
+        VERSION: version
       };
       return new Response(JSON.stringify(info), {
         headers: jsonheaders,
