@@ -2,7 +2,7 @@
 import { Ai } from './vendor/@cloudflare/ai.js';
 
 //Current version of your API
-const version = "1.0.1";
+const version = "1.0.2";
 
 //ID generator
 function uuid() {
@@ -38,10 +38,19 @@ const maxRequestsPerMinute = 100;
 const ai_model = "@cf/meta/llama-2-7b-chat-int8";
 //Timezome for req_time, set to your timezone of choice
 const timezone = "en-US";
+//require password to your API, change 'none' to your password of choice or keep it unloacked with 'none'
+const password = 'none';
 
 // --------------- END OF CONFIG --------------- //
+var password_locked = undefined;
 
+if (password.toLowerCase() !== 'none') {
+  password_locked = true;
+} else {
+  password_locked = false;
+}
 
+//checking ratelimits
 function checkRateLimit(ip) {
   const currentTime = Date.now();
   if (!requestCounts.has(ip)) {
@@ -62,6 +71,7 @@ function checkRateLimit(ip) {
   }
 }
 
+//update client ratelimit
 function updateRateLimit(ip) {
   const currentTime = Date.now();
   if (!requestCounts.has(ip)) {
@@ -100,6 +110,35 @@ export default {
       second: 'numeric',
       hour12: true
     });
+
+    //check if password is enabled
+    if (password_locked == true) {
+      //if it is then get the password param
+      //if the user is going anywhere except API details page
+      if (id !== "api") {
+        const client_passed_pass = url.searchParams.get('p');
+        //if param isnt sent
+        if (!client_passed_pass) {
+          const error_response = {
+            role: 'API',
+            content: `[Error]: Password is required but not provided, please use ?p= parameter to pass a valid password or &p= if you are sending a request with a query already. IP: ` + client_ip,
+          };
+          return new Response(JSON.stringify(error_response), {
+            headers: jsonheaders,
+          });
+        }
+        //if password is wrong
+        if (client_passed_pass !== password) {
+          const error_response = {
+            role: 'API',
+            content: `[Error]: Password is required but not provided, please use ?p= parameter to pass a valid password or &p= if you are sending a request with a query already. IP: ` + client_ip,
+          };
+          return new Response(JSON.stringify(error_response), {
+            headers: jsonheaders,
+          });
+        }
+      }
+    }
 
     if (!checkRateLimit(client_ip)) {
       // Return a rate limit error response
@@ -162,6 +201,7 @@ export default {
         CLIENT_IP: client_ip,
         REQUESTS_PER_SESSION: maxRequest,
         REQUESTS_PER_MINUTE: maxRequestsPerMinute,
+        PASSWORD_LOCKED: password_locked,
         GITHUB: 'https://github.com/localuser-isback/Cloudflare-AI', //keep if epic.
         VERSION: version
       };
