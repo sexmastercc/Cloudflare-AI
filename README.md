@@ -55,7 +55,7 @@ Every ID by default has a max of 100 requests to the AI before being to be re-ge
 ```
 1) Rate limiting your API [DONE! ⭐]
 2) Password locking your API [DONE! ⭐]
-3) Much better Frontend UI [WIP]
+3) Much better Frontend UI [DONE! ⭐]
 4) Ability to keep UUID/apikey and go back to previous conversations (frontend) [NO SUPPORT YET🌑]
 5) Add markdown support on frontend [DONE! ⭐]
 6) Ability to change models quickly and easily [PARTIALLY DONE ☄️]
