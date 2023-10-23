@@ -177,19 +177,52 @@
       padding: 15px;
     }
 
-    .top-right-button {
+    .dropbtn {
+      background-color: #191b1c;
+      color: white;
+      padding: 16px;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
       position: absolute;
-      top: 10px;
-      right: 10px;
+      top: 5px;
+      left: 5px;
       padding: 10px;
-      background-color: #f44336;
       color: #fff;
       border: none;
       border-radius: 5px;
       cursor: pointer;
     }
-    .top-right-button:hover {
-      background-color: #d32f2f;
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #191b1c;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+
+    .dropdown-content a {
+      color: #fff;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+
+    .dropdown-content a:hover {background-color: black}
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .dropdown:hover .dropbtn {
+      background-color: #444;
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -202,7 +235,13 @@
 <body>
   <h1>Cloudflare AI</h1>
   </br>
-  <button onclick='setApiUrl()' class="top-right-button">Custom API URL</button>
+  <div class="dropdown">
+    <button class="dropbtn">Settings</button>
+    <div class="dropdown-content">
+      <a href="#" onclick='setApiUrl()'>Custom API URL</a>
+      <a href="#" onclick='setIDsession()'>Custom ID Session</a>
+    </div>
+  </div>
   <center>
     <form id="chatForm">
       <textarea id="input" type="text" placeholder="Send a message"></textarea>
@@ -216,14 +255,22 @@
 
     // --------------- CONFIG --------------- //
     // modify URL to your API
-    let apiUrl = "YOUR API URL"
+    let apiUrl = "https://ai.ghgi.site"
     
     // ----------- END OF CONFIG ------------ //
+    let uuid = '';
 
     function setApiUrl() {
       const customUrl = prompt("Enter custom API URL: ");
       if (customUrl) {
         apiUrl = customUrl;
+      }
+    }
+
+    function setIDsession() {
+      const customUUID = prompt("Enter custom session ID: ");
+      if (customUUID) {
+        uuid = customUUID;
       }
     }
     
@@ -239,7 +286,6 @@
       }
       return newUUID;
     }
-    let uuid = '';
     const chatForm = document.getElementById('chatForm');
     const inputField = document.getElementById('input');
     const responseDiv = document.getElementById('response');
