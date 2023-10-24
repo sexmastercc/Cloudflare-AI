@@ -60,6 +60,9 @@ Every ID by default has a max of 100 requests to the AI before being to be re-ge
 5) Add markdown support on frontend [DONE! ⭐]
 6) Ability to change models quickly and easily [PARTIALLY DONE ☄️]
 7) Voice & audio to text via wisper (not any time soon) [NO SUPPORT YET🌑]
+8) Admin panel API with stats like your analyics [NO SUPPORT YET🌑]
+
+More than this when cloudflare AI adds more features i can build off of.
 ```
 
 ### Why this over the offical cloudflare API?
