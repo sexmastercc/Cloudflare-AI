@@ -7,6 +7,16 @@ This is NOT for production use.
 
 [WARNING!] By default the API does not have a password, it is recommened to add a password to your API aswell as configure the rate limit settings if you want it to be less public.
 
+###Also,
+
+as of know the AI workers are free because there in beta but this may soon change once there out of beta as explained in the article by cloudflare:
+
+https://blog.cloudflare.com/workers-ai/
+
+The pricing will be very cheap though (around 1 cent per 130 responses or 830 image classifications or 1250 embedings)
+
+I am hoping they will still have a free tier which can be used otherwise this project may halt.
+
 ## Steps
 
 First create a cloudflare account.
