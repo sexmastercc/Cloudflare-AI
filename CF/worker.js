@@ -40,9 +40,11 @@ const ai_model = "@cf/meta/llama-2-7b-chat-int8";
 const timezone = "en-US";
 // Require a password to your API, change 'none' to your password of choice or keep it unlocked with 'none'
 const password = 'none';
-var password_locked = undefined;
 
 // --------------- END OF CONFIG --------------- //
+
+//will be defined automataclly
+var password_locked = undefined;
 
 if (password.toLowerCase() !== 'none') {
   password_locked = true;
