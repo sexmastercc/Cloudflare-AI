@@ -34,7 +34,7 @@ const preprompt = "You are a helpful and responsive assistant, you answer questi
 const maxRequest = 100;
 // Max number of requests GLOBALLY per minute
 const maxRequestsPerMinute = 100;
-// DO NOT TOUCH UNLESS YOU KNOW WHAT YOU'RE DOING!!
+// Find more models at https://developers.cloudflare.com/workers-ai/models/text-generation
 const ai_model = "@cf/meta/llama-2-7b-chat-int8";
 // Timezone for req_time, set to your timezone of choice
 const timezone = "en-US";
